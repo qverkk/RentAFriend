@@ -44,4 +44,8 @@ class JpaUserInformationService(val repository: UserInformationRepository) : Inf
         return ResponseEntity("Information has been updated", HttpStatus.OK)
     }
 
+    override fun allInformation(): List<UserInformationDTO> {
+        return repository.findAllByInformationIdAfter(0)
+    }
+
 }

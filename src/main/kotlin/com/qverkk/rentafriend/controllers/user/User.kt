@@ -1,6 +1,5 @@
 package com.qverkk.rentafriend.controllers.user
 
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -15,7 +14,7 @@ data class User(
         @Column(name = "lastName")
         val lastName: String,
         @Column(name = "birthDate")
-        val birthDate: Date,
+        val birthDate: String,
         @Column(name = "username")
         val username: String,
         @Column(name = "password")

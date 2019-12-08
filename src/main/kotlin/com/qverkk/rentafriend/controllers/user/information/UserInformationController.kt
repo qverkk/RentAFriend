@@ -27,4 +27,12 @@ class UserInformationController(val service: JpaUserInformationService, val user
     fun updateInformation(@RequestBody information: UserInformationDTO): ResponseEntity<Any> {
         return service.updateInformation(information)
     }
+
+    @GetMapping(
+            value = ["/all"],
+            produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun allInformation(): List<UserInformationDTO> {
+        return service.allInformation()
+    }
 }

@@ -22,7 +22,8 @@ class UserController {
             headers = ["username", "password"]
     )
     fun loginUser(@RequestHeader("username") username: String, @RequestHeader("password") password: String): ResponseEntity<Any> {
-        val user = service.findUserByUsername(username) ?: return ResponseEntity("The user doesn't exist", HttpStatus.NOT_ACCEPTABLE)
+        val user = service.findUserByUsername(username)
+                ?: return ResponseEntity("The user doesn't exist", HttpStatus.NOT_ACCEPTABLE)
         if (user.password == password) {
             return ResponseEntity(user, HttpStatus.OK)
         }
@@ -35,9 +36,11 @@ class UserController {
             headers = ["username", "password"]
     )
     fun loginUserTest(@RequestHeader("username") username: String, @RequestHeader("password") password: String): ResponseEntity<Any> {
-        val user = service.findUserByUsername(username) ?: return ResponseEntity("The user doesn't exist", HttpStatus.NOT_ACCEPTABLE)
+        val user = service.findUserByUsername(username)
+                ?: return ResponseEntity("The user doesn't exist", HttpStatus.NOT_ACCEPTABLE)
         if (user.password == password) {
-            val informationForUser = informationService.getInformationForUser(user) ?: return ResponseEntity(user, HttpStatus.OK)
+            val informationForUser = informationService.getInformationForUser(user)
+                    ?: return ResponseEntity(user, HttpStatus.OK)
 
             val response = UserWithInformation(user, informationForUser)
             return ResponseEntity(response, HttpStatus.OK)
@@ -68,6 +71,7 @@ class UserController {
             consumes = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun addUserWithInformation(@RequestBody userWithInformation: UserWithInformation): ResponseEntity<Any> {
+        println(userWithInformation)
         val userAdded = service.addUser(userWithInformation.user)
         if (userAdded == null) {
             return ResponseEntity("User couldn't be added", HttpStatus.CONFLICT)
@@ -75,7 +79,12 @@ class UserController {
 
         userWithInformation.information.userId = userAdded.userId
         val informationAdded = informationService.addInformation(userWithInformation.information)
-        return ResponseEntity(informationAdded, HttpStatus.OK)
+        if (informationAdded == null) {
+            return ResponseEntity("Information couldn't be added", HttpStatus.CONFLICT)
+        }
+
+        val response = UserWithInformation(userAdded, informationAdded)
+        return ResponseEntity(response, HttpStatus.OK)
     }
 
     @PostMapping(
