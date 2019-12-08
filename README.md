@@ -1,1 +1,1 @@
-This is an app for my Android Project lab
+Tourist Rent A Friend Backend spring api
