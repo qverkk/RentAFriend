@@ -1,6 +1,7 @@
 package com.qverkk.rentafriend.controllers.user
 
 import com.qverkk.rentafriend.controllers.user.information.JpaUserInformationService
+import org.hibernate.annotations.Parameter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -15,6 +16,30 @@ class UserController {
 
     @Autowired
     private lateinit var informationService: JpaUserInformationService
+
+    @GetMapping(
+            value = ["/country/{countryName}"],
+            produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun getAllUsersForCountry(@PathVariable(value = "countryName") countryName: String): List<SecuredUser> {
+        return service.findByCountry(countryName)
+    }
+
+    @GetMapping(
+            value = ["/city/{cityName}"],
+            produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun getAllUsersForCity(@PathVariable(value = "cityName") cityName: String): List<SecuredUser> {
+        return service.findByCityName(cityName)
+    }
+
+    @GetMapping(
+            value = ["/allUsers"],
+            produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun getAllSecuredUsers(): List<SecuredUser> {
+        return service.getAllSecuredUsers()
+    }
 
     @PostMapping(
             value = ["/login"],
@@ -73,15 +98,11 @@ class UserController {
     fun addUserWithInformation(@RequestBody userWithInformation: UserWithInformation): ResponseEntity<Any> {
         println(userWithInformation)
         val userAdded = service.addUser(userWithInformation.user)
-        if (userAdded == null) {
-            return ResponseEntity("User couldn't be added", HttpStatus.CONFLICT)
-        }
+                ?: return ResponseEntity("User couldn't be added", HttpStatus.CONFLICT)
 
         userWithInformation.information.userId = userAdded.userId
         val informationAdded = informationService.addInformation(userWithInformation.information)
-        if (informationAdded == null) {
-            return ResponseEntity("Information couldn't be added", HttpStatus.CONFLICT)
-        }
+                ?: return ResponseEntity("Information couldn't be added", HttpStatus.CONFLICT)
 
         val response = UserWithInformation(userAdded, informationAdded)
         return ResponseEntity(response, HttpStatus.OK)
