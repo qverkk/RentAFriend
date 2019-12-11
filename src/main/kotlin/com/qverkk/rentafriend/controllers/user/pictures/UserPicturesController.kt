@@ -1,6 +1,8 @@
 package com.qverkk.rentafriend.controllers.user.pictures
 
+import com.qverkk.rentafriend.controllers.user.JpaUserService
 import com.qverkk.rentafriend.controllers.user.UserDTO
+import com.qverkk.rentafriend.controllers.user.fromUserDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -12,23 +14,65 @@ class UserPicturesController {
 
     @Autowired
     private lateinit var service: JpaUserPictureService
+    @Autowired
+    private lateinit var userService: JpaUserService
+
+    @PostMapping(
+            value = ["/user/add"],
+            produces = [MediaType.APPLICATION_JSON_VALUE],
+            headers = ["user"]
+    )
+    fun insertImageForUser(@RequestHeader("user") userId: Int, @RequestBody picture: ByteArray): Boolean {
+        println(picture)
+        val image = UserPictureDTO(
+                0,
+                userId,
+                picture,
+                true
+        )
+        service.updatePicture(image)
+        return true
+    }
 
     @PostMapping(
             value = ["/update/pictures"],
             produces = [MediaType.APPLICATION_JSON_VALUE],
-            consumes = [MediaType.APPLICATION_JSON_VALUE]
+            headers = ["user"]
     )
-    fun updateUserProfilePicture(@RequestBody picture: UserPictureDTO): Boolean {
-        val pictures = service.getAllByUser(picture.userId.toDTO())
+    fun updateUserProfilePicture(@RequestHeader("user") userId: Int, @RequestBody picture: ByteArray): Boolean {
+        println(picture)
+        val pictures = service.getAllByUserId(userId)
         var result = false
+        if (!service.userContainsPicture(userId, picture)) {
+            service.updatePicture(
+                    UserPictureDTO(
+                            0,
+                            userId,
+                            picture,
+                            true
+                    )
+            )
+        }
         pictures.forEach {
-            it.profilePicture = it.imageBase64.contentEquals(picture.imageBase64)
+            it.profilePicture = it.imageBase64.contentEquals(picture)
             if (it.profilePicture && !result) {
                 result = true
             }
             service.updatePicture(it)
         }
         return result
+    }
+
+    @PostMapping(
+            value = ["/userprofile"],
+            produces = [MediaType.APPLICATION_JSON_VALUE],
+            consumes = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun getUserProfileImage(@RequestBody userId: Int): UserPictureDTO? {
+        println(userId)
+        val picture = service.findByUserIdAndProfilePicture(userId, true)
+        println(picture?.imageBase64)
+        return picture
     }
 
     @GetMapping(

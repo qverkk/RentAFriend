@@ -9,12 +9,20 @@ import org.springframework.stereotype.Service
 
 @Service("User picture service")
 class JpaUserPictureService(val userPicturesRepository: UserPicturesRepository, val userRepo: UserRepository) : UserPictureService {
+    override fun getAllByUserId(userId: Int): List<UserPictureDTO> {
+        if (userRepo.findByUserId(userId) == null) {
+            return emptyList()
+        }
+
+        return userPicturesRepository.findAllByUserId(userId)
+    }
+
     override fun getAllByUser(user: UserDTO): List<UserPictureDTO> {
         if (userRepo.findByUsername(user.username) == null) {
             return emptyList()
         }
 
-        return userPicturesRepository.findAllByUserId(fromUserDTO(user))
+        return userPicturesRepository.findAllByUserId(user.userId)
     }
 
     override fun deletePicture(id: Int): ResponseEntity<Any> {
@@ -36,5 +44,14 @@ class JpaUserPictureService(val userPicturesRepository: UserPicturesRepository, 
 
     override fun updatePicture(picture: UserPictureDTO) {
         userPicturesRepository.save(fromUserPictureDTO(picture))
+    }
+
+    override fun userContainsPicture(userId: Int, picture: ByteArray): Boolean {
+        val findAllByUserId = userPicturesRepository.findAllByUserId(userId)
+        return findAllByUserId.stream().anyMatch { it.imageBase64.contentEquals(picture) }
+    }
+
+    override fun findByUserIdAndProfilePicture(userId: Int, profilePicture: Boolean): UserPictureDTO? {
+        return userPicturesRepository.findByUserIdAndProfilePicture(userId, profilePicture)
     }
 }
