@@ -8,4 +8,5 @@ interface UserPictureService {
     fun deletePicture(id: Int): ResponseEntity<Any>
     fun getPicture(id: Int): UserPictureDTO?
     fun deleteByPictureIdAndUserId(picture: UserPictureDTO, user: UserDTO): UserPictureDTO?
+    fun updatePicture(picture: UserPictureDTO)
 }

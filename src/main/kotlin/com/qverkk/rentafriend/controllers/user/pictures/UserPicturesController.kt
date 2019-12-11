@@ -13,6 +13,24 @@ class UserPicturesController {
     @Autowired
     private lateinit var service: JpaUserPictureService
 
+    @PostMapping(
+            value = ["/update/pictures"],
+            produces = [MediaType.APPLICATION_JSON_VALUE],
+            consumes = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun updateUserProfilePicture(@RequestBody picture: UserPictureDTO): Boolean {
+        val pictures = service.getAllByUser(picture.userId.toDTO())
+        var result = false
+        pictures.forEach {
+            it.profilePicture = it.imageBase64.contentEquals(picture.imageBase64)
+            if (it.profilePicture && !result) {
+                result = true
+            }
+            service.updatePicture(it)
+        }
+        return result
+    }
+
     @GetMapping(
             value = ["/get"],
             headers = ["user"],

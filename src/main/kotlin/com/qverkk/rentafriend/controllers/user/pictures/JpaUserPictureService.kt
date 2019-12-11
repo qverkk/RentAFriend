@@ -33,4 +33,8 @@ class JpaUserPictureService(val userPicturesRepository: UserPicturesRepository, 
 
         return userPicturesRepository.deleteByUserIdAndPictureId(fromUserDTO(user), picture.pictureId)
     }
+
+    override fun updatePicture(picture: UserPictureDTO) {
+        userPicturesRepository.save(fromUserPictureDTO(picture))
+    }
 }
