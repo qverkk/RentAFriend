@@ -74,6 +74,22 @@ class UserController {
     }
 
     @GetMapping(
+            value = ["/all/information"],
+            produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun getAllUserInformation(): List<UserWithInformation> {
+        val users = service.getAllUsers()
+        val result = mutableListOf<UserWithInformation>()
+        users.forEach {
+            val information = informationService.getInformationForUser(it)
+            if (information != null) {
+                result.add(UserWithInformation(it, information))
+            }
+        }
+        return result
+    }
+
+    @GetMapping(
             value = ["/all"],
             produces = [MediaType.APPLICATION_JSON_VALUE]
     )
