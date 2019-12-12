@@ -10,6 +10,6 @@ interface UserPictureService {
     fun getPicture(id: Int): UserPictureDTO?
     fun deleteByPictureIdAndUserId(picture: UserPictureDTO, user: UserDTO): UserPictureDTO?
     fun updatePicture(picture: UserPictureDTO)
-    fun userContainsPicture(userId: Int, picture: ByteArray): Boolean
+    fun userContainsPicture(userId: Int, picture: String): Boolean
     fun findByUserIdAndProfilePicture(userId: Int, profilePicture: Boolean): UserPictureDTO?
 }

@@ -46,12 +46,12 @@ class JpaUserPictureService(val userPicturesRepository: UserPicturesRepository, 
         userPicturesRepository.save(fromUserPictureDTO(picture))
     }
 
-    override fun userContainsPicture(userId: Int, picture: ByteArray): Boolean {
+    override fun userContainsPicture(userId: Int, picture: String): Boolean {
         val findAllByUserId = userPicturesRepository.findAllByUserId(userId)
         return findAllByUserId.stream().anyMatch { it.imageBase64.contentEquals(picture) }
     }
 
     override fun findByUserIdAndProfilePicture(userId: Int, profilePicture: Boolean): UserPictureDTO? {
-        return userPicturesRepository.findByUserIdAndProfilePicture(userId, profilePicture)
+        return userPicturesRepository.findFirstByUserIdAndProfilePicture(userId, profilePicture)
     }
 }

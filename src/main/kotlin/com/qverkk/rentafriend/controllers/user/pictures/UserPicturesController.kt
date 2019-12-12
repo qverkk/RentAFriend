@@ -2,7 +2,6 @@ package com.qverkk.rentafriend.controllers.user.pictures
 
 import com.qverkk.rentafriend.controllers.user.JpaUserService
 import com.qverkk.rentafriend.controllers.user.UserDTO
-import com.qverkk.rentafriend.controllers.user.fromUserDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -22,8 +21,7 @@ class UserPicturesController {
             produces = [MediaType.APPLICATION_JSON_VALUE],
             headers = ["user"]
     )
-    fun insertImageForUser(@RequestHeader("user") userId: Int, @RequestBody picture: ByteArray): Boolean {
-        println(picture)
+    fun insertImageForUser(@RequestHeader("user") userId: Int, @RequestBody picture: String): Boolean {
         val image = UserPictureDTO(
                 0,
                 userId,
@@ -39,8 +37,7 @@ class UserPicturesController {
             produces = [MediaType.APPLICATION_JSON_VALUE],
             headers = ["user"]
     )
-    fun updateUserProfilePicture(@RequestHeader("user") userId: Int, @RequestBody picture: ByteArray): Boolean {
-        println(picture)
+    fun updateUserProfilePicture(@RequestHeader("user") userId: Int, @RequestBody picture: String): Boolean {
         val pictures = service.getAllByUserId(userId)
         var result = false
         if (!service.userContainsPicture(userId, picture)) {
@@ -69,9 +66,7 @@ class UserPicturesController {
             consumes = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun getUserProfileImage(@RequestBody userId: Int): UserPictureDTO? {
-        println(userId)
         val picture = service.findByUserIdAndProfilePicture(userId, true)
-        println(picture?.imageBase64)
         return picture
     }
 

@@ -7,5 +7,5 @@ interface UserPicturesRepository : CrudRepository<UserPicture, Int> {
     fun findAllByUserId(user: Int): List<UserPictureDTO>
     fun deleteByUserIdAndPictureId(user: User, pictureId: Int): UserPictureDTO?
     fun findByPictureId(pictureId: Int): UserPictureDTO?
-    fun findByUserIdAndProfilePicture(userId: Int, profilePicture: Boolean): UserPictureDTO?
+    fun findFirstByUserIdAndProfilePicture(userId: Int, profilePicture: Boolean): UserPictureDTO?
 }
