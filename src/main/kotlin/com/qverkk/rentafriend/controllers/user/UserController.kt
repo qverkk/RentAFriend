@@ -112,7 +112,6 @@ class UserController {
             consumes = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun addUserWithInformation(@RequestBody userWithInformation: UserWithInformation): ResponseEntity<Any> {
-        println(userWithInformation)
         val userAdded = service.addUser(userWithInformation.user)
                 ?: return ResponseEntity("User couldn't be added", HttpStatus.CONFLICT)
 
