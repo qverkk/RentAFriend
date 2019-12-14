@@ -90,6 +90,23 @@ class UserController {
     }
 
     @GetMapping(
+            value = ["/all/information/country"],
+            produces = [MediaType.APPLICATION_JSON_VALUE],
+            headers = ["countryName"]
+    )
+    fun getAllUserInformationFromCountry(@RequestHeader("countryName") countryName: String): List<UserWithInformation> {
+        val users = service.getAllUsers()
+        val result = mutableListOf<UserWithInformation>()
+        users.forEach {
+            val information = informationService.getInformationForUser(it)
+            if (information != null && information.country == countryName) {
+                result.add(UserWithInformation(it, information))
+            }
+        }
+        return result
+    }
+
+    @GetMapping(
             value = ["/all"],
             produces = [MediaType.APPLICATION_JSON_VALUE]
     )
