@@ -17,7 +17,7 @@ class UserOrdersController {
             value = ["/create"],
             headers = ["rentingId", "rentedId"]
     )
-    fun rent(@RequestHeader("ordering") rentingId: Int, @RequestHeader("rentedId") rentedId: Int) {
+    fun rent(@RequestHeader("rentingId") rentingId: Int, @RequestHeader("rentedId") rentedId: Int) {
         service.addOrderBetween(rentingId, rentedId)
     }
 }
