@@ -11,13 +11,15 @@ class JpaUserOrderService(val userOrdersRepository: UserOrdersRepository, val us
         return userOrdersRepository.findAllByUserRentedIdOrUserRentingId(userId)
     }
 
-    override fun addOrderBetween(rentingUser: Int, rentedUser: Int) {
+    override fun addOrderBetween(rentingUser: Int, rentedUser: Int): Boolean {
         if (!orderBetweenUsersExists(rentingUser, rentedUser)) {
             val rentedUserObj = userRepository.findByUserId(rentedUser)
             val rentingUserObj = userRepository.findByUserId(rentingUser)
             val newChatName = "Chat between ${rentedUserObj!!.firstName} and ${rentingUserObj!!.firstName}"
             userOrdersRepository.save(fromUserOrdersDTO(UserOrdersDTO(UUID.randomUUID().toString(), rentingUser, rentedUser, newChatName)))
+            return true
         }
+        return false
     }
 
     private fun orderBetweenUsersExists(renting: Int, rented: Int): Boolean {
