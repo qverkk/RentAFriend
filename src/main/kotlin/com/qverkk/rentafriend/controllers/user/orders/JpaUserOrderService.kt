@@ -22,6 +22,10 @@ class JpaUserOrderService(val userOrdersRepository: UserOrdersRepository, val us
         return false
     }
 
+    override fun isUserRented(rentingUser: Int, rentedUser: Int): Boolean {
+        return userOrdersRepository.findByUserRentingIdAndUserRentedId(rentingUser, rentedUser) != null
+    }
+
     private fun orderBetweenUsersExists(renting: Int, rented: Int): Boolean {
         return userOrdersRepository.findByUserRentedIdAndUserRentingId(rented, renting) != null ||
                 userOrdersRepository.findByUserRentingIdAndUserRentedId(renting, rented) != null

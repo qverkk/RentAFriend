@@ -25,4 +25,12 @@ class UserOrdersController {
     fun getAllForUser(@RequestHeader("userId") userId: Int): List<UserOrdersDTO> {
         return service.getAllOrdersByUser(userId)
     }
+
+    @GetMapping(
+            value = ["/user/rented"],
+            headers = ["rentingId", "rentedId"]
+    )
+    fun isUserRented(@RequestHeader("rentingId") rentingId: Int, @RequestHeader("rentedId") rentedId: Int): Boolean {
+        return service.isUserRented(rentingId, rentedId)
+    }
 }
