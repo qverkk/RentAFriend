@@ -8,7 +8,7 @@ import java.util.*
 class JpaUserOrderService(val userOrdersRepository: UserOrdersRepository, val userRepository: UserRepository): UserOrderService {
 
     override fun getAllOrdersByUser(userId: Int): List<UserOrdersDTO> {
-        return userOrdersRepository.findAllByUserRentedIdOrUserRentingId(userId)
+        return userOrdersRepository.findAllByUserRentedIdOrUserRentingId(userId, userId)
     }
 
     override fun addOrderBetween(rentingUser: Int, rentedUser: Int): Boolean {
