@@ -23,7 +23,7 @@ class UserOrdersController {
             headers = ["userId"]
     )
     fun getAllForUser(@RequestHeader("userId") userId: Int): List<UserOrdersDTO> {
-        return service.getAllOrdersByUser(userId)
+        return service.getAllByUser(userId)
     }
 
     @GetMapping(

@@ -7,7 +7,7 @@ import java.util.*
 @Service("User orders service")
 class JpaUserOrderService(val userOrdersRepository: UserOrdersRepository, val userRepository: UserRepository): UserOrderService {
 
-    override fun getAllOrdersByUser(userId: Int): List<UserOrdersDTO> {
+    override fun getAllByUser(userId: Int): List<UserOrdersDTO> {
         return userOrdersRepository.findAllByUserRentedIdOrUserRentingId(userId, userId)
     }
 
