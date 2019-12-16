@@ -1,7 +1,6 @@
 package com.qverkk.rentafriend.controllers.user
 
 import com.qverkk.rentafriend.controllers.user.information.JpaUserInformationService
-import org.hibernate.annotations.Parameter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -64,7 +63,7 @@ class UserController {
         val user = service.findUserByUsername(username)
                 ?: return ResponseEntity("The user doesn't exist", HttpStatus.NOT_ACCEPTABLE)
         if (user.password == password) {
-            val informationForUser = informationService.getInformationForUser(user)
+            val informationForUser = informationService.getForUser(user)
                     ?: return ResponseEntity(user, HttpStatus.OK)
 
             val response = UserWithInformation(user, informationForUser)
@@ -81,7 +80,7 @@ class UserController {
         val users = service.getAllUsers()
         val result = mutableListOf<UserWithInformation>()
         users.forEach {
-            val information = informationService.getInformationForUser(it)
+            val information = informationService.getForUser(it)
             if (information != null) {
                 result.add(UserWithInformation(it, information))
             }
@@ -98,7 +97,7 @@ class UserController {
         val users = service.getAllUsers()
         val result = mutableListOf<UserWithInformation>()
         users.forEach {
-            val information = informationService.getInformationForUser(it)
+            val information = informationService.getForUser(it)
             if (information != null && information.country == countryName) {
                 result.add(UserWithInformation(it, information))
             }
@@ -133,7 +132,7 @@ class UserController {
                 ?: return ResponseEntity("User couldn't be added", HttpStatus.CONFLICT)
 
         userWithInformation.information.userId = userAdded.userId
-        val informationAdded = informationService.addInformation(userWithInformation.information)
+        val informationAdded = informationService.add(userWithInformation.information)
                 ?: return ResponseEntity("Information couldn't be added", HttpStatus.CONFLICT)
 
         val response = UserWithInformation(userAdded, informationAdded)

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service
 
 @Service("User information service")
 class JpaUserInformationService(val repository: UserInformationRepository) : InformationService {
-    override fun getInformationForUser(user: UserDTO): UserInformationDTO? {
+    override fun getForUser(user: UserDTO): UserInformationDTO? {
         return repository.findByUserId(user.userId)
     }
 
-    override fun addInformation(information: UserInformationDTO): UserInformationDTO? {
+    override fun add(information: UserInformationDTO): UserInformationDTO? {
         if (repository.findByUserId(information.userId) != null) {
             return null
         }
@@ -24,7 +24,7 @@ class JpaUserInformationService(val repository: UserInformationRepository) : Inf
         return null
     }
 
-    override fun deleteInformation(information: UserInformationDTO): ResponseEntity<Any> {
+    override fun delete(information: UserInformationDTO): ResponseEntity<Any> {
         val databaseInformation = repository.findByInformationId(information.informationId)
                 ?: return ResponseEntity("Information doesn't exists", HttpStatus.CONFLICT)
 
@@ -32,7 +32,7 @@ class JpaUserInformationService(val repository: UserInformationRepository) : Inf
         return ResponseEntity("Information has been deleted", HttpStatus.OK)
     }
 
-    override fun updateInformation(information: UserInformationDTO): ResponseEntity<Any> {
+    override fun update(information: UserInformationDTO): ResponseEntity<Any> {
         val databaseInformation = repository.findByInformationId(information.informationId)
                 ?: return ResponseEntity("Information doesn't exist", HttpStatus.CONFLICT)
 
@@ -44,7 +44,7 @@ class JpaUserInformationService(val repository: UserInformationRepository) : Inf
         return ResponseEntity("Information has been updated", HttpStatus.OK)
     }
 
-    override fun allInformation(): List<UserInformationDTO> {
+    override fun getAll(): List<UserInformationDTO> {
         return repository.findAllByInformationIdAfter(0)
     }
 

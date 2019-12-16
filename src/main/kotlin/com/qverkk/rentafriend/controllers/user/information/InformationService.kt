@@ -4,9 +4,9 @@ import com.qverkk.rentafriend.controllers.user.UserDTO
 import org.springframework.http.ResponseEntity
 
 interface InformationService {
-    fun getInformationForUser(user: UserDTO): UserInformationDTO?
-    fun addInformation(information: UserInformationDTO): UserInformationDTO?
-    fun deleteInformation(information: UserInformationDTO): ResponseEntity<Any>
-    fun updateInformation(information: UserInformationDTO): ResponseEntity<Any>
-    fun allInformation(): List<UserInformationDTO>
+    fun getForUser(user: UserDTO): UserInformationDTO?
+    fun add(information: UserInformationDTO): UserInformationDTO?
+    fun delete(information: UserInformationDTO): ResponseEntity<Any>
+    fun update(information: UserInformationDTO): ResponseEntity<Any>
+    fun getAll(): List<UserInformationDTO>
 }

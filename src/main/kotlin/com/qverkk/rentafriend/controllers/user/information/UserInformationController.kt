@@ -15,24 +15,24 @@ class UserInformationController(val service: JpaUserInformationService, val user
             produces = [MediaType.APPLICATION_JSON_VALUE],
             consumes = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun getInformation(@RequestBody user: UserDTO): UserInformationDTO? {
+    fun get(@RequestBody user: UserDTO): UserInformationDTO? {
         val userDb = userService.findUserByUsername(user.username) ?: return null
-        return service.getInformationForUser(userDb)
+        return service.getForUser(userDb)
     }
 
     @PostMapping(
             value = ["/update"],
             consumes = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun updateInformation(@RequestBody information: UserInformationDTO): ResponseEntity<Any> {
-        return service.updateInformation(information)
+    fun update(@RequestBody information: UserInformationDTO): ResponseEntity<Any> {
+        return service.update(information)
     }
 
     @GetMapping(
             value = ["/all"],
             produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun allInformation(): List<UserInformationDTO> {
-        return service.allInformation()
+    fun getAll(): List<UserInformationDTO> {
+        return service.getAll()
     }
 }
