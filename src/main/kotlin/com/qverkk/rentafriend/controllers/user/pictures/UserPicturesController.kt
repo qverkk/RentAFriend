@@ -21,14 +21,14 @@ class UserPicturesController {
             produces = [MediaType.APPLICATION_JSON_VALUE],
             headers = ["user"]
     )
-    fun insertImageForUser(@RequestHeader("user") userId: Int, @RequestBody picture: String): Boolean {
+    fun insertPictureForUser(@RequestHeader("user") userId: Int, @RequestBody picture: String): Boolean {
         val image = UserPictureDTO(
                 0,
                 userId,
                 picture,
                 true
         )
-        service.updatePicture(image)
+        service.update(image)
         return true
     }
 
@@ -41,7 +41,7 @@ class UserPicturesController {
         val pictures = service.getAllByUserId(userId)
         var result = false
         if (!service.userContainsPicture(userId, picture)) {
-            service.updatePicture(
+            service.update(
                     UserPictureDTO(
                             0,
                             userId,
@@ -55,7 +55,7 @@ class UserPicturesController {
             if (it.profilePicture && !result) {
                 result = true
             }
-            service.updatePicture(it)
+            service.update(it)
         }
         return result
     }
@@ -65,7 +65,7 @@ class UserPicturesController {
             produces = [MediaType.APPLICATION_JSON_VALUE],
             consumes = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun getUserProfileImage(@RequestBody userId: Int): UserPictureDTO? {
+    fun getUserProfilePicture(@RequestBody userId: Int): UserPictureDTO? {
         val picture = service.findByUserIdAndProfilePicture(userId, true)
         return picture
     }
@@ -84,7 +84,7 @@ class UserPicturesController {
             headers = ["id"]
     )
     fun deletePicture(@RequestHeader id: Int): ResponseEntity<Any> {
-        return service.deletePicture(id)
+        return service.deleteById(id)
     }
 
     @GetMapping(
@@ -93,7 +93,7 @@ class UserPicturesController {
             produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun getPicture(@RequestHeader id: Int): UserPictureDTO? {
-        return service.getPicture(id)
+        return service.getById(id)
     }
 
     @DeleteMapping(

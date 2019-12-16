@@ -25,12 +25,12 @@ class JpaUserPictureService(val userPicturesRepository: UserPicturesRepository, 
         return userPicturesRepository.findAllByUserId(user.userId)
     }
 
-    override fun deletePicture(id: Int): ResponseEntity<Any> {
+    override fun deleteById(id: Int): ResponseEntity<Any> {
         userPicturesRepository.deleteById(id)
         return ResponseEntity("Picture has been deleted", HttpStatus.OK)
     }
 
-    override fun getPicture(id: Int): UserPictureDTO? {
+    override fun getById(id: Int): UserPictureDTO? {
         return userPicturesRepository.findByPictureId(id)
     }
 
@@ -42,7 +42,7 @@ class JpaUserPictureService(val userPicturesRepository: UserPicturesRepository, 
         return userPicturesRepository.deleteByUserIdAndPictureId(fromUserDTO(user), picture.pictureId)
     }
 
-    override fun updatePicture(picture: UserPictureDTO) {
+    override fun update(picture: UserPictureDTO) {
         userPicturesRepository.save(fromUserPictureDTO(picture))
     }
 
