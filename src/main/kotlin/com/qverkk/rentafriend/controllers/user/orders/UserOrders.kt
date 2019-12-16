@@ -13,9 +13,13 @@ data class UserOrders(
         @Column(name = "userRentedId")
         val userRentedId: Int,
         @Column(name = "chatName")
-        val chatName: String
+        val chatName: String,
+        @Column(name = "userRentingName")
+        val userRentingName: String,
+        @Column(name = "userRentedName")
+        val userRentedName: String
 ) {
-    fun toDTO(): UserOrdersDTO = UserOrdersDTO(orderId, userRentingId, userRentedId, chatName)
+    fun toDTO(): UserOrdersDTO = UserOrdersDTO(orderId, userRentingId, userRentedId, chatName, userRentingName, userRentedName)
 }
 
-fun fromUserOrdersDTO(order: UserOrdersDTO): UserOrders = UserOrders(order.orderId, order.userRentingId, order.userRentedId, order.chatName)
+fun fromUserOrdersDTO(order: UserOrdersDTO): UserOrders = UserOrders(order.orderId, order.userRentingId, order.userRentedId, order.chatName, order.userRentingName, order.userRentedName)

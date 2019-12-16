@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service("User orders service")
-class JpaUserOrderService(val userOrdersRepository: UserOrdersRepository, val userRepository: UserRepository): UserOrderService {
+class JpaUserOrderService(val userOrdersRepository: UserOrdersRepository, val userRepository: UserRepository) : UserOrderService {
 
     override fun getAllByUser(userId: Int): List<UserOrdersDTO> {
         return userOrdersRepository.findAllByUserRentedIdOrUserRentingId(userId, userId)
@@ -16,7 +16,16 @@ class JpaUserOrderService(val userOrdersRepository: UserOrdersRepository, val us
             val rentedUserObj = userRepository.findByUserId(rentedUser)
             val rentingUserObj = userRepository.findByUserId(rentingUser)
             val newChatName = "Chat between ${rentedUserObj!!.firstName} and ${rentingUserObj!!.firstName}"
-            userOrdersRepository.save(fromUserOrdersDTO(UserOrdersDTO(UUID.randomUUID().toString(), rentingUser, rentedUser, newChatName)))
+            val newOrder = UserOrdersDTO(
+                    UUID.randomUUID().toString(),
+                    rentingUser,
+                    rentedUser,
+                    newChatName,
+                    "${rentingUserObj.firstName} ${rentingUserObj.lastName}",
+                    "${rentedUserObj.firstName} ${rentedUserObj.lastName}"
+                    )
+
+            userOrdersRepository.save(fromUserOrdersDTO(newOrder))
             return true
         }
         return false
