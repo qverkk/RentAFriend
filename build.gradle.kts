@@ -30,6 +30,7 @@ dependencies {
 	implementation("org.springframework:spring-boot-starter-actuator")
 	implementation("org.springframework:spring-context")
 	implementation("org.springframework:spring-aop")
+	implementation("com.squareup.okhttp3:okhttp:3.2.0")
 	runtimeOnly("mysql:mysql-connector-java")
 }
 
