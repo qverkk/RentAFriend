@@ -25,12 +25,16 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
-	implementation("org.springframework:spring-boot-starter")
-	implementation("org.springframework:spring-boot-starter-web")
-	implementation("org.springframework:spring-boot-starter-actuator")
+	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework:spring-context")
 	implementation("org.springframework:spring-aop")
 	implementation("com.squareup.okhttp3:okhttp:3.2.0")
+
+//	implementation("com.google.auth:google-auth-library-oauth2-http:0.19.0")
+	implementation("com.google.api-client:google-api-client:1.30.5")
+
 	runtimeOnly("mysql:mysql-connector-java")
 }
 
