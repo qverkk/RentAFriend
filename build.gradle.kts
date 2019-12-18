@@ -48,3 +48,14 @@ tasks.withType<KotlinCompile> {
 		jvmTarget = "1.8"
 	}
 }
+
+tasks.register("buildJarPublishDocker") {
+	group = "build"
+	description = "Creates a jar file and updates the docker image"
+
+	dependsOn(tasks.clean)
+	mustRunAfter(tasks.clean).dependsOn(tasks.bootJar)
+	doLast {
+		println("Done registering")
+	}
+}

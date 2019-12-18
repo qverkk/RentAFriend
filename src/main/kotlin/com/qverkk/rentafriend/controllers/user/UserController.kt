@@ -1,6 +1,8 @@
 package com.qverkk.rentafriend.controllers.user
 
 import com.qverkk.rentafriend.controllers.user.information.JpaUserInformationService
+import com.qverkk.rentafriend.controllers.user.messages.ChatMessageDTO
+import com.qverkk.rentafriend.controllers.user.messages.JpaChatMessageService
 import net.minidev.json.JSONObject
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -22,11 +24,14 @@ class UserController {
     @Autowired
     private lateinit var informationService: JpaUserInformationService
 
+    @Autowired
+    private lateinit var messageService: JpaChatMessageService
+
     @PostMapping(
             value = ["/send"],
             consumes = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun sendMessage(@RequestBody message: MessageDTO): Boolean {
+    fun sendMessage(@RequestBody message: ChatMessageDTO): Boolean {
         val client = OkHttpClient()
 
         val json = JSONObject()
@@ -54,7 +59,8 @@ class UserController {
                 .build()
 
         val execute = client.newCall(request).execute()
-        println(execute.body()?.string())
+
+        messageService.addMessage(message)
         return execute.isSuccessful
     }
 
