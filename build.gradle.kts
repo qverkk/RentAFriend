@@ -35,7 +35,15 @@ dependencies {
 //	implementation("com.google.auth:google-auth-library-oauth2-http:0.19.0")
 	implementation("com.google.api-client:google-api-client:1.30.5")
 
+	testImplementation("io.rest-assured:rest-assured:4.1.2")
+	testImplementation("io.rest-assured:json-path:4.1.2")
+	testImplementation("io.rest-assured:json-schema-validator:4.1.2")
+	testImplementation("io.rest-assured:kotlin-extensions:4.1.2")
+	testImplementation("io.rest-assured:xml-path:4.1.2")
+	testImplementation("org.assertj:assertj-core:3.11.1")
+
 	runtimeOnly("mysql:mysql-connector-java")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<Test> {
