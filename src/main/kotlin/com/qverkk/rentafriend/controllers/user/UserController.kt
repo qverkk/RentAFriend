@@ -173,7 +173,8 @@ class UserController {
 
     @PostMapping(
             value = ["/register"],
-            consumes = [MediaType.APPLICATION_JSON_VALUE]
+            consumes = [MediaType.APPLICATION_JSON_VALUE],
+            produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun addUserWithInformation(@RequestBody userWithInformation: UserWithInformation): ResponseEntity<Any> {
         val userAdded = service.addUser(userWithInformation.user)
